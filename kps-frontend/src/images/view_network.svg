@@ -1,0 +1,14 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M64 34C44 34 26.92 46.44 20 64C26.92 81.56 44 94 64 94C84 94 101.08 81.56 108 64C101.08 46.44 84 34 64 34ZM64 84C52.96 84 44 75.04 44 64C44 52.96 52.96 44 64 44C75.04 44 84 52.96 84 64C84 75.04 75.04 84 64 84ZM64 52C57.36 52 52 57.36 52 64C52 70.64 57.36 76 64 76C70.64 76 76 70.64 76 64C76 57.36 70.64 52 64 52Z" fill="url(#paint0_linear_84_304)"/>
+<rect x="2" y="2" width="124" height="124" rx="62" stroke="url(#paint1_linear_84_304)" stroke-width="4"/>
+<defs>
+<linearGradient id="paint0_linear_84_304" x1="108" y1="34" x2="52.1467" y2="115.918" gradientUnits="userSpaceOnUse">
+<stop stop-color="#8BEAFF"/>
+<stop offset="1" stop-color="#006C9E"/>
+</linearGradient>
+<linearGradient id="paint1_linear_84_304" x1="128" y1="0" x2="0" y2="128" gradientUnits="userSpaceOnUse">
+<stop stop-color="#8BEAFF"/>
+<stop offset="1" stop-color="#006C9E"/>
+</linearGradient>
+</defs>
+</svg>
