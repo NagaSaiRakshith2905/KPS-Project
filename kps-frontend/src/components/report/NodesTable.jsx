@@ -13,16 +13,27 @@ import {
   Tooltip,
 } from "@mui/material";
 import React, { useState } from "react";
+import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import EditNode from "./EditNode";
 import ExportIcon from "../../images/table-export.svg";
 import { networkActions } from "../../store/network";
+import { useDownloadExcel } from "react-export-table-to-excel";
 
 const NodesTable = () => {
   const dispatch = useDispatch();
   const nodes = useSelector((state) => state.network.nodes);
   const [editNodeOpen, setEditNodeOpen] = useState(false);
   const [editData, setEditData] = useState({});
+
+  const tableRef = useRef(null);
+
+  const { onDownload } = useDownloadExcel({
+    currentTableRef: tableRef.current,
+    filename: "Nodes Data",
+    sheet: "Nodes Data",
+  });
+
   return (
     <Box
       mt={"2rem"}
@@ -38,7 +49,7 @@ const NodesTable = () => {
           node={editData}
         />
       )}
-      <Button size={"small"} variant={"outlined"} color={"info"}>
+      <Button size={"small"} variant={"outlined"} color={"info"} onClick={onDownload}>
         export nodes
         <img
           src={ExportIcon}
@@ -48,7 +59,7 @@ const NodesTable = () => {
         />
       </Button>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table sx={{ minWidth: 650 }} aria-label="simple table" ref={tableRef}>
           <TableHead>
             <TableRow>
               <TableCell>ID</TableCell>

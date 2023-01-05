@@ -17,6 +17,8 @@ import {
   updatetNetworkAPI,
   addNetworkAPI,
 } from "../../services/NetworkService";
+import * as XLSX from "xlsx";
+
 const NavBar = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -30,6 +32,27 @@ const NavBar = (props) => {
 
   const network = useSelector((state) => state.network);
   const username = useSelector((state) => state.auth.username);
+
+  const exportDataHandler = (e) => {
+    e.preventDefault();
+    const temp = [];
+    network.nodes.forEach((node) => {
+      const name = node.nodeName;
+      node.edges.forEach((edge) => {
+        const value = { nodeName: name, ...edge };
+        temp.push(value);
+      });
+    });
+
+    const nodes = XLSX.utils.json_to_sheet(network.nodes);
+    const fibers = XLSX.utils.json_to_sheet(network.links);
+    const edges = XLSX.utils.json_to_sheet(temp);
+    const wb = {
+      Sheets: { nodes: nodes, fibers: fibers, edges: edges },
+      SheetNames: ["nodes", "fibers", "edges"],
+    };
+    XLSX.writeFile(wb, "CompleteReport.xlsx");
+  };
 
   const saveNetworkHandler = async (e) => {
     e.preventDefault();
@@ -153,6 +176,7 @@ const NavBar = (props) => {
                 size={"small"}
                 variant={"outlined"}
                 color={"info"}
+                onClick={exportDataHandler}
               >
                 export report
                 <img
