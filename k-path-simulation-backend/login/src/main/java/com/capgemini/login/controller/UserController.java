@@ -4,6 +4,7 @@ import com.capgemini.login.pojo.UserRequest;
 import com.capgemini.login.pojo.UserResponse;
 import com.capgemini.login.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,11 +13,13 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping(path = "/api/user/")
 @CrossOrigin(origins = "*")
+@Slf4j
 public class UserController {
     private final UserService userService;
 
     @PostMapping(path = "register/")
     public ResponseEntity<String> registerUser(@RequestBody UserRequest user){
+        log.info(user.toString());
         return new ResponseEntity<>(userService.registerUser(user), HttpStatus.CREATED);
     }
 

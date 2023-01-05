@@ -34,8 +34,8 @@ const Register = (props) => {
     } else {
       await registerUserApi({
         userName: username,
-        email,
-        password,
+        email: email,
+        password: password,
       })
         .then((resp) => {
           if (resp.status === 200 || resp.status === 201) {

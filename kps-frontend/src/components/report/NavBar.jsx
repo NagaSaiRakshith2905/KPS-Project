@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, Button, Grid, IconButton, Typography } from "@mui/material";
-import { Stack } from "@mui/system";
+import {
+  Box,
+  Button,
+  Grid,
+  Stack,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import { NavigateBeforeRounded } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { networkActions } from "../../store/network";
+import ExportIcon from "../../images/table-export.svg";
 import {
   analysepathAPI,
   updatetNetworkAPI,
@@ -128,7 +135,7 @@ const NavBar = (props) => {
             <NavigateBeforeRounded fontSize={"large"} />
           </IconButton>
         </Grid>
-        <Grid item xs={3} md={9}>
+        <Grid item xs={3} md={8}>
           <Typography
             variant="h6"
             sx={{
@@ -138,30 +145,50 @@ const NavBar = (props) => {
             Report
           </Typography>
         </Grid>
-        <Grid item md={2}>
-          <Button
-            fullWidth
-            size={"small"}
-            variant={"outlined"}
-            color={"warning"}
-            disabled={
-              (!isNetworkCreated || isNetworkUpdated) &&
-              (network.nodes.length < 2 || network.links.length < 1)
-            }
-            onClick={(e) => {
-              if (!isNetworkCreated) saveNetworkHandler(e);
-              if (isNetworkCreated && !isNetworkUpdated)
-                alert("Already saved!");
-              if (isNetworkCreated && isNetworkUpdated)
-                updatetNetworkHandler(e);
-            }}
-          >
-            {!isNetworkCreated
-              ? "Save Network"
-              : isNetworkUpdated
-              ? "Update Network"
-              : "Save Network"}
-          </Button>
+        <Grid item md={3}>
+          <Grid container alignItems={"center"} columnSpacing={2}>
+            <Grid item md={6}>
+              <Button
+                fullWidth
+                size={"small"}
+                variant={"outlined"}
+                color={"info"}
+              >
+                export report
+                <img
+                  src={ExportIcon}
+                  style={{ marginLeft: "8px" }}
+                  width={"18px"}
+                  alt=""
+                />
+              </Button>
+            </Grid>
+            <Grid item md={6}>
+              <Button
+                fullWidth
+                size={"small"}
+                variant={"outlined"}
+                color={"warning"}
+                disabled={
+                  (!isNetworkCreated || isNetworkUpdated) &&
+                  (network.nodes.length < 2 || network.links.length < 1)
+                }
+                onClick={(e) => {
+                  if (!isNetworkCreated) saveNetworkHandler(e);
+                  if (isNetworkCreated && !isNetworkUpdated)
+                    alert("Already saved!");
+                  if (isNetworkCreated && isNetworkUpdated)
+                    updatetNetworkHandler(e);
+                }}
+              >
+                {!isNetworkCreated
+                  ? "Save Network"
+                  : isNetworkUpdated
+                  ? "Update Network"
+                  : "Save Network"}
+              </Button>
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </Box>

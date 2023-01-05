@@ -5,6 +5,8 @@ import { NavigateBeforeRounded } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 // import { networkActions } from "../../store/network";
 import { analysepathAPI } from "../../services/NetworkService";
+import ExportIcon from "../../images/table-export.svg";
+
 const Navbar = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -41,7 +43,7 @@ const Navbar = (props) => {
             <NavigateBeforeRounded fontSize={"large"} />
           </IconButton>
         </Grid>
-        <Grid item xs={3} md={10}>
+        <Grid item xs={3} md={9}>
           <Typography
             variant="h6"
             sx={{
@@ -51,15 +53,15 @@ const Navbar = (props) => {
             Analysis
           </Typography>
         </Grid>
-        <Grid item md={1}>
-          <Button
-            fullWidth
-            size={"small"}
-            variant={"outlined"}
-            color={"info"}
-            onClick={handleOpen}
-          >
-            Add
+        <Grid item md={2}>
+          <Button size={"small"} fullWidth variant={"outlined"} color={"info"}>
+            export analysis
+            <img
+              src={ExportIcon}
+              style={{ marginLeft: "8px" }}
+              width={"18px"}
+              alt=""
+            />
           </Button>
         </Grid>
       </Grid>

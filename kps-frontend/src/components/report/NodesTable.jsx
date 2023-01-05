@@ -1,6 +1,7 @@
 import { DeleteRounded, EditRounded } from "@mui/icons-material";
 import {
   Box,
+  Button,
   IconButton,
   Paper,
   Table,
@@ -14,6 +15,7 @@ import {
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import EditNode from "./EditNode";
+import ExportIcon from "../../images/table-export.svg";
 import { networkActions } from "../../store/network";
 
 const NodesTable = () => {
@@ -22,7 +24,13 @@ const NodesTable = () => {
   const [editNodeOpen, setEditNodeOpen] = useState(false);
   const [editData, setEditData] = useState({});
   return (
-    <Box mt={"2rem"}>
+    <Box
+      mt={"2rem"}
+      display="flex"
+      flexDirection={"column"}
+      gap={2}
+      alignItems={"end"}
+    >
       {editNodeOpen && (
         <EditNode
           open={editNodeOpen}
@@ -30,6 +38,15 @@ const NodesTable = () => {
           node={editData}
         />
       )}
+      <Button size={"small"} variant={"outlined"} color={"info"}>
+        export nodes
+        <img
+          src={ExportIcon}
+          style={{ marginLeft: "8px" }}
+          width={"18px"}
+          alt=""
+        />
+      </Button>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>

@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { authActions } from "./store/auth";
 import Analysis from "./Pages/Analysis";
+import PageNotFound from "./Pages/PageNotFound";
 
 function App() {
   const dispatch = useDispatch();
@@ -44,6 +45,7 @@ function App() {
           path="/network/:id/:networkName/analysis"
           element={<Analysis />}
         />
+        <Route path="/*" element={<PageNotFound />} />
       </Routes>
     </ThemeProvider>
   );
