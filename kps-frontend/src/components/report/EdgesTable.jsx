@@ -1,4 +1,6 @@
 import {
+  Box,
+  Button,
   MenuItem,
   Paper,
   Stack,
@@ -11,6 +13,7 @@ import {
   TextField,
 } from "@mui/material";
 import React, { useState } from "react";
+import ExportIcon from "../../images/table-export.svg";
 import { useSelector } from "react-redux";
 
 const EdgesTable = () => {
@@ -23,21 +26,33 @@ const EdgesTable = () => {
     setEdges(temp[0].edges);
   };
   return (
-    <Stack gap={2} mt={"2rem"}>
-      <TextField
-        select
-        variant={"outlined"}
-        size={"small"}
-        label="Select Node"
-        value={node}
-        onChange={nodeChangeHandler}
-      >
-        {nodes.map((node, index) => (
-          <MenuItem key={index} value={node.nodeName}>
-            {node.nodeName}
-          </MenuItem>
-        ))}
-      </TextField>
+    <Box mt={"2rem"} display="flex" flexDirection={"column"} gap={2}>
+      <Stack direction={"row"} gap={2} justifyContent={"space-between"}>
+        <TextField
+          select
+          variant={"outlined"}
+          size={"small"}
+          label="Select Node"
+          sx={{ width: "300px" }}
+          value={node}
+          onChange={nodeChangeHandler}
+        >
+          {nodes.map((node, index) => (
+            <MenuItem key={index} value={node.nodeName}>
+              {node.nodeName}
+            </MenuItem>
+          ))}
+        </TextField>
+        <Button size={"small"} variant={"outlined"} color={"info"}>
+          export edges
+          <img
+            src={ExportIcon}
+            style={{ marginLeft: "8px" }}
+            width={"18px"}
+            alt=""
+          />
+        </Button>
+      </Stack>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -63,7 +78,7 @@ const EdgesTable = () => {
           </TableBody>
         </Table>
       </TableContainer>
-    </Stack>
+    </Box>
   );
 };
 
