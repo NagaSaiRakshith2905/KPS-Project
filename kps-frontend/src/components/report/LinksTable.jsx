@@ -16,10 +16,19 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ExportIcon from "../../images/table-export.svg";
 import { networkActions } from "../../store/network";
+import { useDownloadExcel } from "react-export-table-to-excel";
+import { useRef } from "react";
 
 const LinksTable = () => {
   const dispatch = useDispatch();
   const links = useSelector((state) => state.network.links);
+  const tableRef = useRef(null);
+
+  const { onDownload } = useDownloadExcel({
+    currentTableRef: tableRef.current,
+    filename: "Fiber Data",
+    sheet: "Fiber Data",
+  });
   return (
     <Box
       mt={"2rem"}
@@ -28,7 +37,7 @@ const LinksTable = () => {
       gap={2}
       alignItems={"end"}
     >
-      <Button size={"small"} variant={"outlined"} color={"info"}>
+      <Button size={"small"} variant={"outlined"} color={"info"} onClick={onDownload}>
         export fibers
         <img
           src={ExportIcon}
@@ -38,7 +47,7 @@ const LinksTable = () => {
         />
       </Button>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table sx={{ minWidth: 650 }} aria-label="simple table" ref={tableRef}>
           <TableHead>
             <TableRow>
               <TableCell>ID</TableCell>

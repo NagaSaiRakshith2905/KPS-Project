@@ -15,16 +15,45 @@ import {
 import React, { useState } from "react";
 import ExportIcon from "../../images/table-export.svg";
 import { useSelector } from "react-redux";
+import { useDownloadExcel } from "react-export-table-to-excel";
+import { useRef } from "react";
+import * as XLSX from "xlsx";
 
 const EdgesTable = () => {
   const nodes = useSelector((state) => state.network.nodes);
   const [node, setNode] = useState(nodes.at(0).nodeName);
   const [edges, setEdges] = useState(nodes.at(0).edges);
+
+  // const tableRef = useRef(null);
+
+  // const { onDownload } = useDownloadExcel({
+  //   currentTableRef: tableRef.current,
+  //   filename: "Edges Data",
+  //   sheet: "Edges Data",
+  // });
+
   const nodeChangeHandler = (e) => {
     setNode(e.target.value);
     const temp = nodes.filter((val) => val.nodeName === e.target.value);
     setEdges(temp[0].edges);
   };
+
+  const exportEdgesHandler =(e) => {
+    e.preventDefault();
+    const names = [];
+    const values = {};
+    nodes.forEach(node => {
+      names.push(node.nodeName)
+      const temp = node.nodeName
+      values[temp]=XLSX.utils.json_to_sheet(node.edges)
+    });
+   const wb = {Sheets:values, SheetNames:names}
+   XLSX.writeFile(wb, "EdgesData.xlsx");
+  }
+
+  // const handleOnExport = () => {
+  //   console.log(exportEdgesHandler.temp)
+  // }
   return (
     <Box mt={"2rem"} display="flex" flexDirection={"column"} gap={2}>
       <Stack direction={"row"} gap={2} justifyContent={"space-between"}>
@@ -43,7 +72,7 @@ const EdgesTable = () => {
             </MenuItem>
           ))}
         </TextField>
-        <Button size={"small"} variant={"outlined"} color={"info"}>
+        <Button size={"small"} variant={"outlined"} color={"info"} onClick = {exportEdgesHandler}>
           export edges
           <img
             src={ExportIcon}
