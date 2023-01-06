@@ -10,7 +10,7 @@ import { MenuItem, TextField, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { networkActions } from "../../store/network";
 
-const NODE_TYPE = ["add-drop", "ola", "pass-through"];
+const NODE_TYPE = ["add_drop", "ola", "pass_through"];
 
 function PaperComponent(props) {
   return (
@@ -27,11 +27,14 @@ export default function EditNode(props) {
   const dispatch = useDispatch();
   const [nodeName, setNodeName] = useState(props.node.nodeName);
   const [ipAddress, setIpAddress] = useState(props.node.ipAddress);
-  const [nodeType, setNodeType] = useState(
-    NODE_TYPE.filter((type) =>
-      type.includes(props.node.nodeType.split("_").at(0).toLowerCase())
-    )
-  );
+  const temp =
+    props.node.nodeType === "add_drop"
+      ? NODE_TYPE.at(0)
+      : props.node.nodeType === "ola"
+      ? NODE_TYPE.at(1)
+      : NODE_TYPE.at(2);
+  console.log(props.node.nodeType, " ", temp);
+  const [nodeType, setNodeType] = useState(temp);
 
   const addNodeHandler = (e) => {
     e.preventDefault();

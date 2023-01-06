@@ -43,7 +43,6 @@ public class ListAllPaths {
 
                 __Node node = nodeList.stream().filter(n -> n.getNodeName().equals(src)).collect(Collectors.toList()).get(0);
                 visited.add(src);
-                log.info(node.toString());
                 if (node.getNeighbours().size() > 0) {
                     for (int i = 0; i < node.getNeighbours().size(); i++) {
                         String n = node.getNeighbours().get(i);

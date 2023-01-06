@@ -1,4 +1,13 @@
-import { Box, Button, Typography } from "@mui/material";
+import { LogoutRounded, Person } from "@mui/icons-material";
+import {
+  Box,
+  Button,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  Typography,
+} from "@mui/material";
 import { Stack } from "@mui/system";
 import React from "react";
 import { useDispatch } from "react-redux";
@@ -9,6 +18,14 @@ const Navbar = () => {
   const username = localStorage.getItem("username");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <Box bgcolor={"#222831"}>
@@ -24,10 +41,32 @@ const Navbar = () => {
         <Typography variant="h5" align={"center"} sx={{ cursor: "pointer" }}>
           K-Path Simulations.
         </Typography>
-        {username && (
-          <Button
-            size={"small"}
-            color={"warning"}
+
+        <Button
+          id="basic-button"
+          aria-controls={open ? "basic-menu" : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? "true" : undefined}
+          onClick={handleClick}
+        >
+          {username}
+        </Button>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            "aria-labelledby": "basic-button",
+          }}
+        >
+          <MenuItem onClick={(e) => navigate(`/profile/${username}`)}>
+            <ListItemIcon>
+              <Person fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>Profile</ListItemText>
+          </MenuItem>
+          <MenuItem
             onClick={(e) => {
               localStorage.removeItem("username");
               dispatch(authActions.setUsername(""));
@@ -35,9 +74,12 @@ const Navbar = () => {
               navigate("/signup");
             }}
           >
-            Logout
-          </Button>
-        )}
+            <ListItemIcon>
+              <LogoutRounded fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>Logout</ListItemText>
+          </MenuItem>
+        </Menu>
       </Stack>
     </Box>
   );

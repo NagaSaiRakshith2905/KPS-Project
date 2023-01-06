@@ -42,6 +42,9 @@ const CirciutCard = (props) => {
           <Typography variant={"subtitle1"}>
             {props.circuit.destinationNode}
           </Typography>
+          <Typography variant={"subtitle1"}>
+            {props.i === 0 ? "User-Defined-Path" : " "}
+          </Typography>
         </Box>
       </Stack>
       {props.circuit.paths.map((path, index) => (

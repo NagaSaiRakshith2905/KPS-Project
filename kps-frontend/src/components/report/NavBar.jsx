@@ -12,26 +12,20 @@ import { NavigateBeforeRounded } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { networkActions } from "../../store/network";
 import ExportIcon from "../../images/table-export.svg";
-import {
-  analysepathAPI,
-  updatetNetworkAPI,
-  addNetworkAPI,
-} from "../../services/NetworkService";
+
 import * as XLSX from "xlsx";
 
 const NavBar = (props) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { id, networkName } = useParams();
+
   const isNetworkCreated = useSelector(
     (state) => state.network.isNetworkCreated
   );
   const isNetworkUpdated = useSelector(
     (state) => state.network.isNetworkUpdated
   );
-
   const network = useSelector((state) => state.network);
-  const username = useSelector((state) => state.auth.username);
 
   const exportDataHandler = (e) => {
     e.preventDefault();
@@ -54,88 +48,8 @@ const NavBar = (props) => {
     XLSX.writeFile(wb, "CompleteReport.xlsx");
   };
 
-  const saveNetworkHandler = async (e) => {
-    e.preventDefault();
-    props.setisLoading(true);
-    const newNetwork = {
-      networkName: network.networkName,
-      username: username,
-      nodes: [...network.nodes],
-      links: [...network.links],
-    };
-
-    const src = newNetwork.nodes.at(0).nodeName;
-    const dst = newNetwork.nodes.at(newNetwork.nodes.length - 1).nodeName;
-
-    const analysePath = async (id) => {
-      return await analysepathAPI({
-        src: src,
-        dst: dst,
-        networkId: id,
-        path: " ",
-      });
-    };
-
-    await addNetworkAPI(newNetwork)
-      .then((res) => {
-        dispatch(networkActions.setIsNetworkCreated(true));
-        dispatch(networkActions.setNetworkId(res.data.id));
-        dispatch(networkActions.setNetworkName(res.data.networkName));
-        analysePath(res.data.id)
-          .then((resp) => console.log(resp))
-          .catch((err) => console.log(err));
-        props.setisLoading(false);
-        window.location.reload();
-        navigate(`/network/${res.data.id}/${res.data.networkName}`);
-      })
-      .catch((error) => {
-        props.setisLoading(false);
-        console.log(error);
-      });
-  };
-
-  const updatetNetworkHandler = async (e) => {
-    e.preventDefault();
-    props.setisLoading(true);
-
-    const newNetwork = {
-      id: network.networkId,
-      networkName: network.networkName,
-      username: username,
-      nodes: [...network.nodes],
-      links: [...network.links],
-    };
-
-    const src = newNetwork.nodes.at(0).nodeName;
-    const dst = newNetwork.nodes.at(newNetwork.nodes.length - 1).nodeName;
-
-    const analysePath = async (id) => {
-      return await analysepathAPI({
-        src: src,
-        dst: dst,
-        networkId: id,
-        path: " ",
-      });
-    };
-
-    console.log(newNetwork);
-    await updatetNetworkAPI(newNetwork)
-      .then((res) => {
-        console.table(res.data);
-        dispatch(networkActions.setIsNetworkUpdated(false));
-        dispatch(networkActions.setNetworkId(res.data.id));
-        dispatch(networkActions.setNetworkName(res.data.networkName));
-        analysePath(id)
-          .then((resp) => console.log(resp))
-          .catch((err) => console.log(err));
-        props.setisLoading(false);
-        window.location.reload();
-        navigate(`/network/${res.data.id}/${res.data.networkName}`);
-      })
-      .catch((error) => {
-        props.setisLoading(false);
-        console.log(error);
-      });
+  const setShowAddCircuitHandle = (e) => {
+    props.setShowAddCircuit(true);
   };
 
   return (
@@ -198,11 +112,11 @@ const NavBar = (props) => {
                   (network.nodes.length < 2 || network.links.length < 1)
                 }
                 onClick={(e) => {
-                  if (!isNetworkCreated) saveNetworkHandler(e);
                   if (isNetworkCreated && !isNetworkUpdated)
                     alert("Already saved!");
-                  if (isNetworkCreated && isNetworkUpdated)
-                    updatetNetworkHandler(e);
+                  else {
+                    setShowAddCircuitHandle(e);
+                  }
                 }}
               >
                 {!isNetworkCreated

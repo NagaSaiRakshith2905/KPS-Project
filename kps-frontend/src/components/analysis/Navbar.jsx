@@ -4,24 +4,19 @@ import { Box, Button, Grid, IconButton, Typography } from "@mui/material";
 import { NavigateBeforeRounded } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 // import { networkActions } from "../../store/network";
-import { analysepathAPI } from "../../services/NetworkService";
 import ExportIcon from "../../images/table-export.svg";
 
 const Navbar = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id, networkName } = useParams();
-  // const isNetworkCreated = useSelector(
-  //   (state) => state.network.isNetworkCreated
-  // );
 
-  const network = useSelector((state) => state.network);
-  // const username = useSelector((state) => state.auth.username);
+  const circuits = useSelector((state) => state.network.circuits);
 
-  const handleOpen = (e) => {
-    e.preventDefault();
-    props.setShowAddCircuit(true);
-  };
+  // const exportAnalysisHandler = (e) => {
+  //   e.preventDefault();
+  //   console.log(circuits);
+  // };
 
   return (
     <Box bgcolor={"#222831"}>
@@ -43,7 +38,7 @@ const Navbar = (props) => {
             <NavigateBeforeRounded fontSize={"large"} />
           </IconButton>
         </Grid>
-        <Grid item xs={3} md={9}>
+        <Grid item xs={3} md={10}>
           <Typography
             variant="h6"
             sx={{
@@ -53,8 +48,8 @@ const Navbar = (props) => {
             Analysis
           </Typography>
         </Grid>
-        <Grid item md={2}>
-          <Button size={"small"} fullWidth variant={"outlined"} color={"info"}>
+        <Grid item md={1}>
+          {/* <Button size={"small"} fullWidth variant={"outlined"} color={"info"}>
             export analysis
             <img
               src={ExportIcon}
@@ -62,7 +57,7 @@ const Navbar = (props) => {
               width={"18px"}
               alt=""
             />
-          </Button>
+          </Button> */}
         </Grid>
       </Grid>
     </Box>

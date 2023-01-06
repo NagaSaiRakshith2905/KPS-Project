@@ -22,5 +22,6 @@ public class NetworkUpdateRequest {
     private String username;
     private List<Node> nodes;
     private List<Link> links;
+    private String udp;
 }
 

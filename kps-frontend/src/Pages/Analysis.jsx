@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import AddCircuitDialog from "../components/analysis/AddCircuitDialog";
+import AddCircuitDialog from "../components/AddCircuitDialog";
 import CirciutCard from "../components/analysis/CircuitCard";
 import Navbar from "../components/analysis/Navbar";
 import LoadinDailog from "../components/LoadinDailog";
@@ -15,13 +15,6 @@ const Analysis = () => {
   }, []);
   return (
     <Box width={"100%"} height={"100vh"} sx={{ overflowY: "scroll" }}>
-      {isLoading && <LoadinDailog />}
-      {showAddCircuit && (
-        <AddCircuitDialog
-          open={showAddCircuit}
-          setShowAddCircuit={setShowAddCircuit}
-        />
-      )}
       <Navbar
         setShowAddCircuit={setShowAddCircuit}
         setisLoading={setIsLoading}
@@ -34,8 +27,8 @@ const Analysis = () => {
           height: "92vh",
         }}
       >
-        {circuits.map((circuit) => {
-          return <CirciutCard circuit={circuit} />;
+        {circuits.map((circuit, i) => {
+          return <CirciutCard i={i} circuit={circuit} />;
         })}
       </Box>
     </Box>

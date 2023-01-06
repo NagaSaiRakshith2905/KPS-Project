@@ -48,7 +48,7 @@ export function userUpdatePasswordApi(value, password) {
 }
 
 export function viewUserByUsernameApi(username) {
-  let url = base_url + "get-by-username/" + username;
+  let url = base_url + "get-by-username/?username=" + username;
   return axios.get(url, {
     mode: "no-cors",
     headers: {

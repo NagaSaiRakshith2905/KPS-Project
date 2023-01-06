@@ -60,6 +60,8 @@ public class NetworkServiceImpl implements NetworkService {
         return savedNetwork;
     }
 
+
+
     @Override
     public List<Network> getAll() {
         return networkRepository.findAll();
@@ -84,6 +86,7 @@ public class NetworkServiceImpl implements NetworkService {
                 return "add_drop";
         }
     }
+
     @Override
     @Transactional
     public Network update(NetworkUpdateRequest object) {
@@ -92,27 +95,26 @@ public class NetworkServiceImpl implements NetworkService {
             throw new NetworkNotFoundException("Invalid Id");
         }
         //updating nodes
-        List<String> updatedNodesName = object.getNodes().stream().filter(node -> node.getId()>=0).map(Node::getNodeName).collect(Collectors.toList());
+        List<String> updatedNodesName = object.getNodes().stream().filter(node -> node.getId() >= 0).map(Node::getNodeName).collect(Collectors.toList());
         List<Node> removedNodes = network.get().getNodes().stream().filter(node -> !updatedNodesName.contains(node.getNodeName())).collect(Collectors.toList());
         network.get().getNodes().removeAll(removedNodes);
         List<Node> newNodes = object.getNodes().stream().filter(node -> node.getId().toString().equals("-1")).collect(Collectors.toList());
         newNodes.forEach(node -> {
-                    nodeService.add(NodeRequest.builder()
-                            .nodeName(node.getNodeName())
-                            .edges(node.getEdges())
-                            .nodeType(mapFromNodeType(node.getNodeType()))
-                            .ipAddress(node.getIpAddress())
-                            .password(node.getPassword())
-                            .x(node.getX())
-                            .y(node.getY())
-                            .network(network.get())
-                            .build());
-                });
-        object.getNodes().stream().filter(node -> node.getId()>=0).forEach(node -> nodeService.update(node));
+            nodeService.add(NodeRequest.builder()
+                    .nodeName(node.getNodeName())
+                    .edges(node.getEdges())
+                    .nodeType(mapFromNodeType(node.getNodeType()))
+                    .ipAddress(node.getIpAddress())
+                    .password(node.getPassword())
+                    .x(node.getX())
+                    .y(node.getY())
+                    .network(network.get())
+                    .build());
+        });
+        object.getNodes().stream().filter(node -> node.getId() >= 0).forEach(node -> nodeService.update(node));
 
         //updating links
-        object.getLinks().forEach(link -> log.info(link.getId().toString()));
-        List<String> updatedLinksId = object.getLinks().stream().filter(link -> link.getId()>=0).map(Link::getLabel).collect(Collectors.toList());
+        List<String> updatedLinksId = object.getLinks().stream().filter(link -> link.getId() >= 0).map(Link::getLabel).collect(Collectors.toList());
         List<Link> removedLinks = network.get().getLinks().stream().filter(link -> !updatedLinksId.contains(link.getLabel())).collect(Collectors.toList());
         List<Link> newLinks = object.getLinks().stream().filter(link -> link.getId().toString().equals("-1")).collect(Collectors.toList());
         newLinks.forEach(link -> linkService.add(LinkRequest.builder()
@@ -130,12 +132,8 @@ public class NetworkServiceImpl implements NetworkService {
         List<Circuit> circuits = network.get().getCircuits();
         network.get().getCircuits().removeAll(circuits);
 
-        Optional<Network> result = networkRepository.findById(object.getId());
-        result.get().getNodes().forEach(node -> log.info(node.getNodeName()));
-        result.get().getLinks().forEach(link -> log.info(link.getLabel()));
-
-
-        return result.get();
+        analysePath(object.getId(),object.getUdp());
+        return network.get();
     }
 
     @Override
@@ -157,14 +155,12 @@ public class NetworkServiceImpl implements NetworkService {
     }
 
     @Override
-    public List<Circuit> analysePath(String src, String dst, Integer networkId, String udf) {
-        analysePathService.createPath(src, dst, udf, networkId);
-        Optional<Network> network = networkRepository.findById(networkId);
-        if (network.isEmpty()) {
-            throw new NetworkNotFoundException("Networks doesn't exists for this user");
-        }
-        network.get().getCircuits().forEach(circuit -> System.out.println(circuit.getSourceNode() + " " + circuit.getDestinationNode()));
-        return network.get().getCircuits();
+    public void analysePath(Integer id, String udp) {
+        Optional<Network> result = networkRepository.findById(id);
+        Optional<List<Node>> nodes = Optional.of(result.get().getNodes());
+        Optional<List<Link>> links = Optional.of(result.get().getLinks());
+        if (nodes.isPresent() && links.isPresent()) analysePathService.nodesData(nodes.get(), links.get(), udp, result.get());
     }
+
 
 }
