@@ -53,11 +53,7 @@ const PathCard = (props) => {
                 minWidth: "8rem",
               }}
             >
-              {props.index === 0
-                ? "User-Defined-Path"
-                : props.index === 1
-                ? "Shortest-Path"
-                : " "}
+              {props.index === 0 ? "Shortest-Path" : " "}
             </Typography>
             <Divider orientation="vertical" variant={"fullWidth"} flexItem />
             <Box display={"flex"} gap={1}>

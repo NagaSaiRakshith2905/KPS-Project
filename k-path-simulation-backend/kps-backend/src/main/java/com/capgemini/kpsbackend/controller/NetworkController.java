@@ -48,12 +48,14 @@ public class NetworkController {
     }
 
     @DeleteMapping("delete-network-by-id/")
+    @ResponseStatus(HttpStatus.OK)
     public void deleteNetworkById(@RequestParam(value = "id") int id){
         service.deleteById(id);
     }
 
-    @GetMapping("analyse-path/")
-    public List<Circuit> analysePath(@RequestParam("src") String src, @RequestParam("dst") String dst, @RequestParam("network-id") Integer networkId, @RequestParam("user-defined-path") String udf){
-        return service.analysePath(src,dst,networkId,udf);
+    @PostMapping("analyse/")
+    @ResponseStatus(HttpStatus.OK)
+    public void analyse(@RequestParam(value = "id") int id,@RequestParam(value = "udp") String  udp){
+        service.analysePath(id,udp);
     }
 }

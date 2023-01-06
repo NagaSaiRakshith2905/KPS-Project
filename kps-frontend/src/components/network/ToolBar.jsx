@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   addNetworkAPI,
-  analysepathAPI,
   updatetNetworkAPI,
 } from "../../services/NetworkService";
 import { networkActions } from "../../store/network";
@@ -30,77 +29,54 @@ const ToolBar = (props) => {
     (state) => state.network.isNetworkCreated
   );
 
-  const saveNetworkHandler = async (e) => {
-    e.preventDefault();
+  // const saveNetworkHandler = async (e) => {
+  //   e.preventDefault();
 
-    const newNetwork = {
-      networkName: network.networkName,
-      username: username,
-      nodes: [...network.nodes],
-      links: [...network.links],
-    };
+  //   const newNetwork = {
+  //     networkName: network.networkName,
+  //     username: username,
+  //     nodes: [...network.nodes],
+  //     links: [...network.links],
+  //   };
 
-    const src = newNetwork.nodes.at(0).nodeName;
-    const dst = newNetwork.nodes.at(newNetwork.nodes.length - 1).nodeName;
+  //   await addNetworkAPI(newNetwork)
+  //     .then((res) => {
+  //       dispatch(networkActions.setIsNetworkCreated(true));
+  //       dispatch(networkActions.setNetworkId(res.data.id));
+  //       dispatch(networkActions.setNetworkName(res.data.networkName));
 
-    const analysePath = async (id) => {
-      return await analysepathAPI({
-        src: src,
-        dst: dst,
-        networkId: id,
-        path: " ",
-      });
-    };
+  //       navigate(`/network/${res.data.id}/${res.data.networkName}`);
+  //     })
+  //     .catch((error) => console.log(error));
+  // };
 
-    await addNetworkAPI(newNetwork)
-      .then((res) => {
-        dispatch(networkActions.setIsNetworkCreated(true));
-        dispatch(networkActions.setNetworkId(res.data.id));
-        dispatch(networkActions.setNetworkName(res.data.networkName));
-        analysePath(res.data.id)
-          .then((resp) => console.log(resp))
-          .catch((err) => console.log(err));
-        navigate(`/network/${res.data.id}/${res.data.networkName}`);
-      })
-      .catch((error) => console.log(error));
+  // const updatetNetworkHandler = async (e) => {
+  //   e.preventDefault();
+
+  //   const newNetwork = {
+  //     id: network.networkId,
+  //     networkName: network.networkName,
+  //     username: username,
+  //     nodes: [...network.nodes],
+  //     links: [...network.links],
+  //   };
+
+  //   const src = newNetwork.nodes.at(0).nodeName;
+  //   const dst = newNetwork.nodes.at(newNetwork.nodes.length - 1).nodeName;
+
+  //   await updatetNetworkAPI(newNetwork)
+  //     .then((res) => {
+  //       dispatch(networkActions.setIsNetworkCreated(true));
+  //       dispatch(networkActions.setNetworkId(res.data.id));
+  //       dispatch(networkActions.setNetworkName(res.data.networkName));
+
+  //       navigate(`/network/${res.data.id}/${res.data.networkName}`);
+  //     })
+  //     .catch((error) => console.log(error));
+  // };
+  const setShowAddCircuitHandle = (e) => {
+    props.setShowAddCircuit(true);
   };
-
-  const updatetNetworkHandler = async (e) => {
-    e.preventDefault();
-
-    const newNetwork = {
-      id: network.networkId,
-      networkName: network.networkName,
-      username: username,
-      nodes: [...network.nodes],
-      links: [...network.links],
-    };
-
-    const src = newNetwork.nodes.at(0).nodeName;
-    const dst = newNetwork.nodes.at(newNetwork.nodes.length - 1).nodeName;
-
-    const analysePath = async (id) => {
-      return await analysepathAPI({
-        src: src,
-        dst: dst,
-        networkId: id,
-        path: " ",
-      });
-    };
-
-    await updatetNetworkAPI(newNetwork)
-      .then((res) => {
-        dispatch(networkActions.setIsNetworkCreated(true));
-        dispatch(networkActions.setNetworkId(res.data.id));
-        dispatch(networkActions.setNetworkName(res.data.networkName));
-        analysePath(res.data.id)
-          .then((resp) => console.log(resp))
-          .catch((err) => console.log(err));
-        navigate(`/network/${res.data.id}/${res.data.networkName}`);
-      })
-      .catch((error) => console.log(error));
-  };
-
   return (
     <Box bgcolor={"rgba(34, 40, 49,0.5)"}>
       <Stack
@@ -143,9 +119,10 @@ const ToolBar = (props) => {
           }
           variant="contained"
           onClick={(e) => {
-            if (!isNetworkCreated) saveNetworkHandler(e);
             if (isNetworkCreated && !isNetworkUpdated) alert("Already saved!");
-            if (isNetworkCreated && isNetworkUpdated) updatetNetworkHandler(e);
+            else {
+              setShowAddCircuitHandle(e);
+            }
           }}
         >
           {!isNetworkCreated

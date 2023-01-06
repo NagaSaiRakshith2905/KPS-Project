@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { authActions } from "./store/auth";
 import Analysis from "./Pages/Analysis";
 import PageNotFound from "./Pages/PageNotFound";
+import Profile from "./Pages/Profile";
 
 function App() {
   const dispatch = useDispatch();
@@ -38,6 +39,7 @@ function App() {
     <ThemeProvider theme={darkTheme}>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/profile/:username" element={<Profile />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/network/:id/:networkName" element={<Network />} />
         <Route path="/network/:id/:networkName/report" element={<Report />} />

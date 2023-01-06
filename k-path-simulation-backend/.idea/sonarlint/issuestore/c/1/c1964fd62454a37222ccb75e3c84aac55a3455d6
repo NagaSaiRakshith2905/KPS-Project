@@ -1,0 +1,9 @@
+
+j
+java:S3655 "LCall "result.isPresent()" or "!result.isEmpty()" before accessing the value.(•ÁÓ8òè–Ø0
+Z
+java:S2589¢"7Remove this expression which always evaluates to "true"(”å•ºüÿÿÿÿ8òè–Ø0
+Z
+java:S2589¢"7Remove this expression which always evaluates to "true"(”å•ºüÿÿÿÿ8ãçá–Ø0
+G
+java:S1602f",Remove useless curly braces around statement(ıÖ¨¡úÿÿÿÿ

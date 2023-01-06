@@ -1,0 +1,15 @@
+
+k	java:S1175"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Õ—ºËûÿÿÿÿ
+E
+java:S5411}"*Use the primitive boolean expression here.(ÌìÜÓøÿÿÿÿ
+F
+java:S5411†"*Use the primitive boolean expression here.(ŸŒ¬¨ÿÿÿÿÿ
+W
+java:S4973<"<Strings and Boxed types should be compared using "equals()".(Äğ€Şÿÿÿÿÿ
+`
+java:S11556">Use isEmpty() to check whether the collection is empty or not.(ùúÿÿÿÿ8„ÿĞ—Ø0
+V	java:S125X"<This block of commented-out lines of code should be removed.(Òùı¡üÿÿÿÿ
+Z
+java:S1155†">Use isEmpty() to check whether the collection is empty or not.(ŸŒ¬¨ÿÿÿÿÿ
+N
+java:S1144p"3Remove this unused private "getCommonSpace" method.(çıÔ”şÿÿÿÿ

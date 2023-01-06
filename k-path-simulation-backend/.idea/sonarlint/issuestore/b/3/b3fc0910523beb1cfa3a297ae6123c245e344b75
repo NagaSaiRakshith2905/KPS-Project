@@ -1,0 +1,14 @@
+
+E
+java:S3740"/Provide the parametrized type for this generic.(ŸÙñ–
+k
+java:S1149"PReplace the synchronized class "Stack" by an unsynchronized one such as "Deque".(„¬·¸şÿÿÿÿ
+k
+java:S1149?"PReplace the synchronized class "Stack" by an unsynchronized one such as "Deque".(„¬·¸şÿÿÿÿ
+V	java:S125"<This block of commented-out lines of code should be removed.(»•ûÿÿÿÿ
+T
+java:S1155.">Use isEmpty() to check whether the collection is empty or not.(ÿÜô‚
+e
+java:S1128"HRemove this unused import 'org.springframework.context.annotation.Bean'.(‚î‰Ş8º˜—Ø0
+C
+java:S1144<"-Remove this unused private "getPaths" method.(³çò

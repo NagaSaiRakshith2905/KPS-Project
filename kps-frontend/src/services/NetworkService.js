@@ -55,19 +55,9 @@ export function deleteNetworkAPI(id) {
     },
   });
 }
-
-export function analysepathAPI(network) {
-  let url =
-    base_url +
-    "analyse-path/?src=" +
-    network.src +
-    "&dst=" +
-    network.dst +
-    "&network-id=" +
-    network.networkId +
-    "&user-defined-path=" +
-    network.path;
-  return axios.get(url, {
+export function analyseAPI(id, udp) {
+  let url = base_url + "analyse/?id=" + id + "&udp=" + udp;
+  return axios.post(url, {
     mode: "no-cors",
     headers: {
       "Access-Control-Allow-Origin": "*",

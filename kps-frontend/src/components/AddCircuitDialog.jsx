@@ -7,10 +7,14 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Paper from "@mui/material/Paper";
 import Draggable from "react-draggable";
 import { Grid, MenuItem, TextField, Typography } from "@mui/material";
-import { useSelector } from "react-redux";
-import { analysepathAPI } from "../../services/NetworkService";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+import {
+  updatetNetworkAPI,
+  addNetworkAPI,
+  analyseAPI,
+} from "../services/NetworkService";
+import { networkActions } from "../store/network";
 function PaperComponent(props) {
   return (
     <Draggable
@@ -24,47 +28,85 @@ function PaperComponent(props) {
 
 export default function AddCircuitDialog(props) {
   const navigate = useNavigate();
-  const networkId = useSelector((state) => state.network.networkId);
-  const nodes = useSelector((state) => state.network.nodes);
-  const networkName = useSelector((state) => state.network.networkName);
-  const circuits = useSelector((state) => state.network.circuits);
-
+  const dispatch = useDispatch();
+  const network = useSelector((state) => state.network);
+  const username = useSelector((state) => state.auth.username);
   const [udp, setUdp] = useState();
+  const isNetworkCreated = useSelector(
+    (state) => state.network.isNetworkCreated
+  );
+  const isNetworkUpdated = useSelector(
+    (state) => state.network.isNetworkUpdated
+  );
 
-  const [fromNode, setFromNode] = useState();
-  const [fromNodeList, setFromNodeList] = useState(nodes);
+  const saveNetworkHandler = async () => {
+    props.setisLoading(true);
+    handleClose();
 
-  const [toNode, setToNode] = useState();
-  const [toNodeList, setToNodeList] = useState(nodes);
+    const newNetwork = {
+      networkName: network.networkName,
+      username: username,
+      nodes: [...network.nodes],
+      links: [...network.links],
+    };
+
+    const analyseAPIHandle = async (id, udp) => {
+      await analyseAPI(id, udp);
+    };
+
+    await addNetworkAPI(newNetwork)
+      .then((res) => {
+        dispatch(networkActions.setIsNetworkCreated(true));
+        dispatch(networkActions.setNetworkId(res.data.id));
+        dispatch(networkActions.setNetworkName(res.data.networkName));
+        analyseAPIHandle(res.data.id, udp);
+        props.setisLoading(false);
+        navigate(`/network/${res.data.id}/${res.data.networkName}`);
+        window.location.reload();
+      })
+      .catch((error) => {
+        props.setisLoading(false);
+        console.log(error);
+      });
+  };
+
+  const updatetNetworkHandler = async () => {
+    props.setisLoading(true);
+    handleClose();
+
+    const newNetwork = {
+      id: network.networkId,
+      networkName: network.networkName,
+      username: username,
+      nodes: [...network.nodes],
+      links: [...network.links],
+      udp: udp,
+    };
+
+    console.log(newNetwork);
+    await updatetNetworkAPI(newNetwork)
+      .then((res) => {
+        console.table(res.data);
+        dispatch(networkActions.setIsNetworkUpdated(false));
+        dispatch(networkActions.setNetworkId(res.data.id));
+        dispatch(networkActions.setNetworkName(res.data.networkName));
+        props.setisLoading(false);
+        navigate(`/network/${res.data.id}/${res.data.networkName}`);
+        window.location.reload();
+      })
+      .catch((error) => {
+        props.setisLoading(false);
+        console.log(error);
+      });
+  };
 
   const addCircuitHandler = async (e) => {
     e.preventDefault();
-
-    const object = {
-      src: fromNode,
-      dst: toNode,
-      networkId,
-      path: udp && udp.length > 0 ? udp : " ",
-    };
-    await analysepathAPI(object)
-      .then((res) => {
-        navigate(`/network/${networkId}/${networkName}`);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    handleClose();
+    if (!isNetworkCreated) saveNetworkHandler();
+    if (isNetworkCreated && !isNetworkUpdated) alert("Already saved!");
+    if (isNetworkCreated && isNetworkUpdated) updatetNetworkHandler();
   };
 
-  const fromNodeChangeHandler = (e) => {
-    setFromNode(e.target.value);
-    setToNodeList(nodes.filter((node) => node.nodeName !== e.target.value));
-  };
-
-  const toNodeChangeHandler = (e) => {
-    setToNode(e.target.value);
-    setFromNodeList(nodes.filter((node) => node.nodeName !== e.target.value));
-  };
   const handleClose = () => {
     props.setShowAddCircuit(false);
   };
@@ -97,44 +139,6 @@ export default function AddCircuitDialog(props) {
         <DialogContent dividers>
           <form onSubmit={addCircuitHandler}>
             <Grid container columnSpacing={2} rowSpacing={2}>
-              <Grid item md={6}>
-                <TextField
-                  select
-                  required
-                  fullWidth
-                  variant={"outlined"}
-                  size={"small"}
-                  label="Select Source"
-                  value={fromNode}
-                  onChange={fromNodeChangeHandler}
-                >
-                  {fromNodeList.map((node, index) => (
-                    <MenuItem key={index} value={node.nodeName}>
-                      {node.nodeName}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-
-              <Grid item md={6}>
-                <TextField
-                  select
-                  required
-                  fullWidth
-                  variant={"outlined"}
-                  size={"small"}
-                  label="Select Destination"
-                  value={toNode}
-                  onChange={toNodeChangeHandler}
-                >
-                  {toNodeList.map((node, index) => (
-                    <MenuItem key={index} value={node.nodeName}>
-                      {node.nodeName}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-
               <Grid item md={12}>
                 <TextField
                   required

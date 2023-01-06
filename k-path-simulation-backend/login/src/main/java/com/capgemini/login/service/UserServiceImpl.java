@@ -87,11 +87,11 @@ public class UserServiceImpl implements UserService {
             else if (!(password == "") && !password.equals(userDetailsByEmail.get().getPassword())) {
                 userDetailsByEmail.get().setPassword(password);
             }
-            return "password Updated successFully";
+            return userDetailsByEmail.get().getUserName();
         }
         else if (!(password == "") && !password.equals(userDetailsByUsername.get().getPassword())) {
             userDetailsByUsername.get().setPassword(password);
         }
-        return "password Updated successFully";
+        return userDetailsByUsername.get().getUserName();
     }
 }

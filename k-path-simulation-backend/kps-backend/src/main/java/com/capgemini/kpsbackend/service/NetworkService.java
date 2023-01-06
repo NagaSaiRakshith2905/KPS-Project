@@ -15,5 +15,5 @@ public interface NetworkService {
     void deleteById(int id);
 
     List<Network> getAllNetworkForUser(String username);
-    List<Circuit> analysePath(String src, String dst, Integer networkId, String udf);
+    void analysePath(Integer id,String udp);
 }

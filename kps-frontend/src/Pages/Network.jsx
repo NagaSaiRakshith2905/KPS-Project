@@ -11,6 +11,9 @@ import ToolBar from "../components/network/ToolBar";
 import Circuit from "../components/network/Circuit";
 import AddNode from "../components/network/AddNode";
 import AddLink from "../components/network/AddLink";
+import LoadinDailog from "../components/LoadinDailog";
+import AddCircuitDialog from "../components/AddCircuitDialog";
+import SaveNetworkDialog from "../components/network/SaveNetworkDialog";
 
 const Network = () => {
   const { id, networkName } = useParams();
@@ -22,14 +25,15 @@ const Network = () => {
     if (!username) navigate("/signup");
   }, [username, navigate]);
 
-  const [createNodeIsShown, setCreateNodeIsShown] = useState(false);
-  const [createLinkIsShown, setCreateLinkIsShown] = useState(false);
+  const [showAddCircuit, setShowAddCircuit] = useState(false);
+  const [udp, setUdp] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
   const nodes = useSelector((state) => state.network.nodes);
   const links = useSelector((state) => state.network.links);
 
   useEffect(() => {
-    document.title = `KPS | ${networkName}`;
+    document.title = `KPS | Network`;
     dispatch(networkActions.setNetworkId(id));
     dispatch(networkActions.setNetworkName(networkName));
     if (id > -1) {
@@ -60,8 +64,19 @@ const Network = () => {
       {openAddLink && (
         <AddLink open={openAddLink} setOpenAddLink={setOpenAddLink} />
       )}
+      {isLoading && <LoadinDailog />}
+      {showAddCircuit && (
+        <AddCircuitDialog
+          udp={udp}
+          setUdp={setUdp}
+          open={showAddCircuit}
+          setShowAddCircuit={setShowAddCircuit}
+          setisLoading={setIsLoading}
+        />
+      )}
       <NavBar />
       <ToolBar
+        setShowAddCircuit={setShowAddCircuit}
         setOpenAddNode={setOpenAddNode}
         setOpenAddLink={setOpenAddLink}
         nodes={nodes}
