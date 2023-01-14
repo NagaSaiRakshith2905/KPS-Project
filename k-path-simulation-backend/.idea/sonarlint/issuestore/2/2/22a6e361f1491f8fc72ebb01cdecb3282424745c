@@ -1,0 +1,10 @@
+
+R
+java:S4973W"<Strings and Boxed types should be compared using "equals()".(·óÆ‰
+W
+java:S4973\"<Strings and Boxed types should be compared using "equals()".(Æş÷õüÿÿÿÿ
+N	java:S106"9Replace this use of System.out or System.err by a logger.(ê×¼©
+?
+java:S1940W")Use the opposite operator ("!=") instead.(·óÆ‰
+D
+java:S1940\")Use the opposite operator ("!=") instead.(Æş÷õüÿÿÿÿ
